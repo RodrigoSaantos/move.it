@@ -1,0 +1,42 @@
+.container {
+  position: fixed;
+  height: 100vh;
+  max-width: 7rem;
+  left: 0;
+  top: 0;
+  padding: 32px 24px;
+  background: var(--white);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu {
+  height: 115px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: auto;
+}
+
+.menu button {
+  border: 0;
+  background: none;
+  position: relative;
+}
+
+.active::before {
+  content: "";
+  position: absolute;
+  height: 56px;
+  border: 3px solid var(--blue);
+  left: -100%;
+  top: -50%;
+  border-radius: 0px 10px 10px 0px;
+}
+
+/* .active {
+  background: red;
+} */

@@ -32,7 +32,7 @@ export default function Home(props: HomeProps) {
         <CountdownProvider>
           <section>
             <div>
-              <Profile />
+              {/* <Profile /> */}
               <CompletedChallenges />
               <Countdown />
             </div>
