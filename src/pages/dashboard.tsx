@@ -13,8 +13,9 @@ import { ChallengesProvider } from '../contexts/ChallengesContext';
 
 import { api, github} from '../services/api';
 import SideBar from '../components/SideBar';
+import { EffectBlur } from '../components/EffectBlur';
 
-interface ApiGithubProps {
+export interface ApiGithubProps {
   login: string;
   avatar_url: string;
   url: string;
@@ -25,44 +26,59 @@ interface HomeProps {
   currentExperience: number;
   challengesCompleted: number;
   profile: ApiGithubProps;
+  id: number
+  user: ApiGithubProps;
+  rank: {
+    profile: ApiGithubProps;
+    level: number;
+    currentExperience: number;
+    challengesCompleted: number;
+  }
 }
 
 export default function Dashboard(props: HomeProps) {
+  
+  console.log(JSON.parse(props.rank as any));
 
   return (
     <ChallengesProvider 
-      level={props.level} 
+      level={props.level}
       currentExperience={props.currentExperience} 
       challengesCompleted={props.challengesCompleted}
+      rank={props.rank as any}
+      id={props.id}
+      user={props.profile}
     >
-      <div className={styles.container}>
-        <Head>
-          <title>Início | move.it</title>
-        </Head>
-        <SideBar />
-        <ExperienceBar />
+      <EffectBlur>
+        <div className={styles.container}>
+          <Head>
+            <title>Início | move.it</title>
+          </Head>
+          <SideBar />
+          <ExperienceBar />
 
-        <CountdownProvider>
-          <section>
-            <div>
-              <Profile login={props.profile.login} avatar_url={props.profile.avatar_url} />
-              <CompletedChallenges />
-              <Countdown />
-            </div>
+          <CountdownProvider>
+            <section>
+              <div>
+                <Profile login={props.profile.login} avatar_url={props.profile.avatar_url} />
+                <CompletedChallenges />
+                <Countdown />
+              </div>
 
-            <div>
-              <ChallengeBox />
-            </div>
-          </section>
-        </CountdownProvider>
-      </div>
+              <div>
+                <ChallengeBox />
+              </div>
+            </section>
+          </CountdownProvider>
+        </div>
+      </EffectBlur>
     </ChallengesProvider>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
-  const { level, currentExperience, challengesCompleted } = ctx.req.cookies
+  const { level, currentExperience, challengesCompleted, rank, id, user } = ctx.req.cookies
 
 
   const response = await github.post('login/oauth/access_token', {
@@ -84,6 +100,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   });
 
+  const rankData = {
+    profile: profile.data,
+    level: Number(level),
+    currentExperience: Number(currentExperience),
+    challengesCompleted: Number(challengesCompleted),
+  }
+
   return {
     props: {
       data,
@@ -91,6 +114,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       level: Number(level),
       currentExperience: Number(currentExperience),
       challengesCompleted: Number(challengesCompleted),
+      rank: JSON.stringify(rankData),
+      id: profile.data.id,
+      user: profile.data,
     }
   }
 }

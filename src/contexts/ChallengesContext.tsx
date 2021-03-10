@@ -2,6 +2,7 @@ import { createContext, useState, ReactNode, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import challenges from '../../challenges.json';
 import { LevelUpModal } from '../components/LevelUpModal';
+import { ApiGithubProps } from '../pages/dashboard';
 
 interface Challenge {
   type: 'body' | 'eye';
@@ -15,6 +16,10 @@ interface ChallengeContextData {
   challengesCompleted: number;
   experienceToNextLevel: number;
   activeChallenge: Challenge;
+  isLevelUpModalOpen: boolean;
+  rank: string;
+  id: number;
+  user: ApiGithubProps;
   levelUp: () => void;
   startNewChallenge: () => void;
   resetChallenge: () => void;
@@ -27,6 +32,9 @@ interface ChallengesProviderProps {
   level: number;
   currentExperience: number;
   challengesCompleted: number;
+  rank: string;
+  id: number;
+  user: ApiGithubProps;
 }
 
 export const ChallengesContext = createContext({} as ChallengeContextData);
@@ -36,6 +44,9 @@ export function ChallengesProvider({ children, ...rest }: ChallengesProviderProp
   const [level, setLevel] = useState(rest.level ?? 1);
   const [currentExperience, setCurrentExperience] = useState(rest.currentExperience ?? 0);
   const [challengesCompleted, setChallengesCompleted] = useState(rest.challengesCompleted ?? 0);
+  const [rank, setRank] = useState(rest.rank ?? 'carregando...');
+  const [id, setId] = useState(rest.id ?? 0);
+  const [user, setUser] = useState(rest.user ?? null);
 
   const [activeChallenge, setActiveChallenge] = useState(null);
   const [isLevelUpModalOpen, setIsLevelUpModalOpen] = useState(false);
@@ -50,7 +61,18 @@ export function ChallengesProvider({ children, ...rest }: ChallengesProviderProp
     Cookies.set('level', String(level))
     Cookies.set('currentExperience', String(currentExperience))
     Cookies.set('challengesCompleted', String(challengesCompleted))
-  }, [level, currentExperience, challengesCompleted]);
+    Cookies.set('rank', rank)
+    Cookies.set(String(id), { 
+      login: user.login, 
+      avatar_url: user.avatar_url, 
+      url: user.url,
+      level: String(level),
+      currentExperience: String(currentExperience),
+      challengesCompleted: String(challengesCompleted),
+      xp: String(Math.round(currentExperience * 100) / experienceToNextLevel + currentExperience)
+
+    })
+  }, [level, currentExperience, challengesCompleted, rank, id]);
 
   function levelUp() {
     setLevel(level + 1);
@@ -87,6 +109,8 @@ export function ChallengesProvider({ children, ...rest }: ChallengesProviderProp
 
     const { amount } = activeChallenge;
 
+    console.log(activeChallenge);
+
     let finalExperience = currentExperience + amount;
 
     if (finalExperience >= experienceToNextLevel) {
@@ -106,7 +130,11 @@ export function ChallengesProvider({ children, ...rest }: ChallengesProviderProp
         currentExperience, 
         challengesCompleted, 
         experienceToNextLevel,
-        activeChallenge, 
+        activeChallenge,
+        isLevelUpModalOpen,
+        rank,
+        id,
+        user,
         levelUp,
         startNewChallenge,
         resetChallenge,
