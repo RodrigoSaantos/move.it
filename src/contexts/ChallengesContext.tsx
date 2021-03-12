@@ -17,9 +17,13 @@ interface ChallengeContextData {
   experienceToNextLevel: number;
   activeChallenge: Challenge;
   isLevelUpModalOpen: boolean;
-  rank: string;
-  id: number;
-  user: ApiGithubProps;
+  user: {
+    level: number;
+    currentExperience: number;
+    challengesCompleted: number;
+    profile: ApiGithubProps;
+    xp: number;
+  }
   levelUp: () => void;
   startNewChallenge: () => void;
   resetChallenge: () => void;
@@ -32,9 +36,14 @@ interface ChallengesProviderProps {
   level: number;
   currentExperience: number;
   challengesCompleted: number;
-  rank: string;
-  id: number;
-  user: ApiGithubProps;
+  xp: number;
+  user: {
+    level: number;
+    currentExperience: number;
+    challengesCompleted: number;
+    profile: ApiGithubProps;
+    xp: number;
+  }
 }
 
 export const ChallengesContext = createContext({} as ChallengeContextData);
@@ -44,8 +53,7 @@ export function ChallengesProvider({ children, ...rest }: ChallengesProviderProp
   const [level, setLevel] = useState(rest.level ?? 1);
   const [currentExperience, setCurrentExperience] = useState(rest.currentExperience ?? 0);
   const [challengesCompleted, setChallengesCompleted] = useState(rest.challengesCompleted ?? 0);
-  const [rank, setRank] = useState(rest.rank ?? 'carregando...');
-  const [id, setId] = useState(rest.id ?? 0);
+  const [xp, setXp] = useState(rest.xp ?? 0);
   const [user, setUser] = useState(rest.user ?? null);
 
   const [activeChallenge, setActiveChallenge] = useState(null);
@@ -61,18 +69,21 @@ export function ChallengesProvider({ children, ...rest }: ChallengesProviderProp
     Cookies.set('level', String(level))
     Cookies.set('currentExperience', String(currentExperience))
     Cookies.set('challengesCompleted', String(challengesCompleted))
-    Cookies.set('rank', rank)
-    Cookies.set(String(id), { 
-      login: user.login, 
-      avatar_url: user.avatar_url, 
-      url: user.url,
+    Cookies.set('xp', String(xp))
+    Cookies.set(String(user.profile.id), { 
+      login: user.profile.login, 
+      name: user.profile.name,
+      avatar_url: user.profile.avatar_url, 
+      url: user.profile.url,
       level: String(level),
       currentExperience: String(currentExperience),
       challengesCompleted: String(challengesCompleted),
-      xp: String(Math.round(currentExperience * 100) / experienceToNextLevel + currentExperience)
+      xp: String(xp),
 
     })
-  }, [level, currentExperience, challengesCompleted, rank, id]);
+  }, [level, currentExperience, challengesCompleted, user, xp]);
+
+  console.log(Cookies.getJSON());
 
   function levelUp() {
     setLevel(level + 1);
@@ -109,8 +120,6 @@ export function ChallengesProvider({ children, ...rest }: ChallengesProviderProp
 
     const { amount } = activeChallenge;
 
-    console.log(activeChallenge);
-
     let finalExperience = currentExperience + amount;
 
     if (finalExperience >= experienceToNextLevel) {
@@ -121,6 +130,7 @@ export function ChallengesProvider({ children, ...rest }: ChallengesProviderProp
     setCurrentExperience(finalExperience);
     setActiveChallenge(null);
     setChallengesCompleted(challengesCompleted + 1);
+    setXp(xp + amount)
   }
 
   return (
@@ -132,8 +142,6 @@ export function ChallengesProvider({ children, ...rest }: ChallengesProviderProp
         experienceToNextLevel,
         activeChallenge,
         isLevelUpModalOpen,
-        rank,
-        id,
         user,
         levelUp,
         startNewChallenge,

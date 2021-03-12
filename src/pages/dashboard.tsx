@@ -17,6 +17,8 @@ import { EffectBlur } from '../components/EffectBlur';
 
 export interface ApiGithubProps {
   login: string;
+  name: string;
+  id: number;
   avatar_url: string;
   url: string;
 }
@@ -25,29 +27,25 @@ interface HomeProps {
   level: number;
   currentExperience: number;
   challengesCompleted: number;
-  profile: ApiGithubProps;
-  id: number
-  user: ApiGithubProps;
-  rank: {
-    profile: ApiGithubProps;
+  xp: number;
+  user: {
     level: number;
     currentExperience: number;
     challengesCompleted: number;
+    profile: ApiGithubProps;
+    xp: number;
   }
 }
 
 export default function Dashboard(props: HomeProps) {
   
-  console.log(JSON.parse(props.rank as any));
-
   return (
     <ChallengesProvider 
       level={props.level}
       currentExperience={props.currentExperience} 
       challengesCompleted={props.challengesCompleted}
-      rank={props.rank as any}
-      id={props.id}
-      user={props.profile}
+      user={props.user}
+      xp={props.user.xp}
     >
       <EffectBlur>
         <div className={styles.container}>
@@ -60,7 +58,7 @@ export default function Dashboard(props: HomeProps) {
           <CountdownProvider>
             <section>
               <div>
-                <Profile login={props.profile.login} avatar_url={props.profile.avatar_url} />
+                <Profile login={props.user.profile.name} avatar_url={props.user.profile.avatar_url} />
                 <CompletedChallenges />
                 <Countdown />
               </div>
@@ -78,7 +76,7 @@ export default function Dashboard(props: HomeProps) {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
-  const { level, currentExperience, challengesCompleted, rank, id, user } = ctx.req.cookies
+  const { level, currentExperience, challengesCompleted, user, xp } = ctx.req.cookies
 
 
   const response = await github.post('login/oauth/access_token', {
@@ -100,23 +98,19 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   });
 
-  const rankData = {
-    profile: profile.data,
-    level: Number(level),
-    currentExperience: Number(currentExperience),
-    challengesCompleted: Number(challengesCompleted),
-  }
-
   return {
     props: {
       data,
-      profile: profile.data,
       level: Number(level),
       currentExperience: Number(currentExperience),
       challengesCompleted: Number(challengesCompleted),
-      rank: JSON.stringify(rankData),
-      id: profile.data.id,
-      user: profile.data,
+      user: {
+        level: Number(level),
+        currentExperience: Number(currentExperience),
+        challengesCompleted: Number(challengesCompleted),
+        profile: profile.data,
+        xp: Number(xp),
+      },
     }
   }
 }
