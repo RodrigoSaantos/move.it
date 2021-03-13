@@ -2,8 +2,6 @@ import styles from '../styles/pages/Login.module.css';
 
 
 export default function Login() {
-  console.log(process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID);
-
   return (
     <div className={styles.container}>
       <div className={styles.background}></div>
