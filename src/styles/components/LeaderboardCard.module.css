@@ -1,0 +1,70 @@
+.container {
+  display: grid;
+  grid-template-columns: 72px auto;
+  background: var(--white);
+  grid-column-gap: 1.5rem;
+  column-gap: 1.5rem;
+  border-radius: 5px;
+}
+
+.container > div:first-child {
+  border-right: 4px solid var(--background);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+
+.leaderboard {
+  height: 100vh;
+  max-width: 992px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+  
+  display: flex;
+  flex-direction: column;
+}
+
+.leaderboard > strong {
+  font-size: 2.25rem;
+  color: var(--title);
+  padding-bottom: 2.5rem;
+}
+
+.leaderboard > section > div:first-child {
+  display: grid;
+  grid-template-columns: 0.5fr 3fr 1fr 1fr;
+  padding-bottom: 1.5rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+
+.userBox {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+
+.userBoxInfo {
+  width: 41%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 2.5rem;
+  column-gap: 0.5rem;
+  align-items: center;
+}
+
+.userBoxInfo strong {
+  color: var(--blue);
+}
+
+.userBox div > img {
+  width: 4rem;
+  height: 4rem;
+}
+
+.userBox div > div strong {
+  font-size: 1.25rem;
+}

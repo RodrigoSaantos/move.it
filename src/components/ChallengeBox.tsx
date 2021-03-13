@@ -25,7 +25,7 @@ export function ChallengeBox() {
 
           <main>
             <img src={`icons/${activeChallenge.type}.svg`} alt={`${activeChallenge.type}`}/>
-            <strong>Exercite-se</strong>
+            <strong>{activeChallenge.type === 'eye' ? 'Mova os olhos' : 'Exercite-se'}</strong>
             <p>{activeChallenge.description}</p>
           </main>
 

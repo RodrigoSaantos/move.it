@@ -1,0 +1,84 @@
+.container {
+  background: var(--blue);
+  height: 100vh;
+  display: flex;
+  align-items: stretch;
+}
+
+.background {
+  flex: 1;
+  background: url(../../../public/icons/background.svg) no-repeat center;
+  background-size: cover;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-right: 10rem;
+
+
+  width: 100%;
+  max-width: 50%;
+}
+
+.content > img {
+  margin-bottom: 6rem;
+}
+
+.content form strong {
+  font-size: 2.25rem;
+  color: var(--white);
+}
+
+.form .iconText {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding: 1.5rem 0 2.5rem 0;
+  color: var(--text-highlight);
+  font-size: 1.25rem;
+}
+
+.iconText span {
+  margin-left: 1.5rem;
+  max-width: 60%;
+}
+
+.button {
+  display: flex;
+  transition: background-color linear 4.2s;
+  position: relative;
+}
+
+.button:hover button:last-child {
+  background: var(--green);
+}
+
+.button button:first-child {
+  width: 100%;
+  max-width: 450px;
+  height: 5rem;
+  background: linear-gradient(90deg, #4953B8 0%, rgba(73, 83, 184, 0.2) 100%);
+  border-radius: 5px 0px 0px 5px;
+  color: var(--text-highlight);
+  font-size: 1.25rem;
+  border: 0;
+  text-align: left;
+  padding-left: 30.32px;
+}
+
+.button button:last-child {
+  position: absolute;
+  right: 0;
+  width: 80px;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blue-dark);
+  border: 0;
+  border-radius: 0px 5px 5px 0;
+  transition: background-color 0.2s;
+}

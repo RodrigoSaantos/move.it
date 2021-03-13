@@ -17,3 +17,7 @@
   align-content: center;
 
 }
+
+.active {
+  filter: blur(3x);
+}
