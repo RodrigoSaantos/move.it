@@ -27,6 +27,14 @@
   position: relative;
 }
 
+.menu button img {
+  transition: transform 0.2s;
+}
+
+.menu button img:hover {
+  transform: scale(1.3);
+}
+
 .active::before {
   content: "";
   position: absolute;
@@ -37,6 +45,10 @@
   border-radius: 0px 10px 10px 0px;
 }
 
-/* .active {
-  background: red;
-} */
+.logout {
+  transition: transform 0.2s;
+}
+
+.logout:hover {
+  transform: scale(1.3);
+}

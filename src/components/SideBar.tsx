@@ -10,7 +10,7 @@ export default function SideBar() {
 
   return (
     <aside className={styles.container}>
-      <Link href="">
+      <Link href={`https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}`}>
         <a>
           <img src="/icons/logo-dashboard.svg" alt="Logo"/>
         </a>
@@ -42,6 +42,10 @@ export default function SideBar() {
         </button>
 
       </div>
+
+      <a href="/" className={styles.logout}>
+        <img src="/icons/logout.svg" alt="Sair" width="30px" height="30px"/>
+      </a>  
 
     </aside>
   )

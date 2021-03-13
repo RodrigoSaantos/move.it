@@ -7,9 +7,6 @@ import { ChallengesContext } from '../contexts/ChallengesContext';
 
 export const LeaderboardCard = () => {
   const { user, challengesCompleted, xp } = useContext(ChallengesContext);
-  const cookies = Cookies.getJSON();
-
-  console.log(cookies);
   
   return (
     <div className={styles.container}>
