@@ -14,6 +14,10 @@ import { ChallengesProvider } from '../contexts/ChallengesContext';
 import { api, github} from '../services/api';
 import SideBar from '../components/SideBar';
 import { EffectBlur } from '../components/EffectBlur';
+import { LeaderboardCard } from '../components/LeaderboardCard';
+import { SideBarProvider } from '../contexts/SideBarContext';
+import DashboardHome from '../components/DasboardHome'
+import LeaderboardHome from '../components/LeaderboardHome';
 
 export interface ApiGithubProps {
   login: string;
@@ -23,7 +27,7 @@ export interface ApiGithubProps {
   url: string;
 }
 
-interface HomeProps {
+export interface HomeProps {
   level: number;
   currentExperience: number;
   challengesCompleted: number;
@@ -41,34 +45,21 @@ export default function Dashboard(props: HomeProps) {
   
   return (
     <ChallengesProvider 
-      level={props.level}
-      currentExperience={props.currentExperience} 
-      challengesCompleted={props.challengesCompleted}
+      level={props.user.level}
+      currentExperience={props.user.currentExperience} 
+      challengesCompleted={props.user.challengesCompleted}
       user={props.user}
       xp={props.user.xp}
     >
       <EffectBlur>
-        <div className={styles.container}>
-          <Head>
-            <title>Início | move.it</title>
-          </Head>
+            <Head>
+              <title>Início | move.it</title>
+            </Head>
+        <SideBarProvider>
           <SideBar />
-          <ExperienceBar />
-
-          <CountdownProvider>
-            <section>
-              <div>
-                <Profile login={props.user.profile.name} avatar_url={props.user.profile.avatar_url} />
-                <CompletedChallenges />
-                <Countdown />
-              </div>
-
-              <div>
-                <ChallengeBox />
-              </div>
-            </section>
-          </CountdownProvider>
-        </div>
+          <DashboardHome />
+          <LeaderboardHome />
+        </SideBarProvider>
       </EffectBlur>
     </ChallengesProvider>
   )

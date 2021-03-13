@@ -1,22 +1,13 @@
 import Link from 'next/link';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { SideBarContext } from '../contexts/SideBarContext';
 
 import styles from '../styles/components/SideBar.module.css';
 
 export default function SideBar() {
 
-  const [buttonHome, setButtonHome] = useState(true);
-  const [buttonAward, setButtonAward] = useState(false);
+  const { buttonHome, buttonAward, handleButtonAward, handleButtonHome } = useContext(SideBarContext);
 
-  function handleButtonHome() {
-    setButtonHome(true);
-    setButtonAward(false);
-  }
-
-  function handleButtonAward() {
-    setButtonHome(false);
-    setButtonAward(true);
-  }
   return (
     <aside className={styles.container}>
       <Link href="">
